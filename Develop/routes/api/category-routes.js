@@ -44,24 +44,32 @@ router.post('/',  async (req, res) => {
    
  });
  
- router.put('/:id', (req, res) => {
-    User.update(category_id)
-   });
+ // update a category by its `id` value
+ router.put('/:id', async (req, res) => {
+   Category.update({
+     ID: req.body.ID
+
+   },
+   { where:{
+    ID: req.body.ID
+   }
+
+   }).then((updatecategory)=>{
+     res.json(updatecategory)
+   })
+ })
   
 
+   
   
 
-  // update a category by its `id` value
+ 
 
-
+// delete a category by its `id` value
 router.delete('/:id', (req, res) => {
-   User.destroy({
-    where:{
-      category_id
-    }
-  })
+   
 
-  // delete a category by its `id` value
+  
 });
 
 module.exports = router;
