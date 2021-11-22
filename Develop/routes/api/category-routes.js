@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { query } = require('express');
 const { Model, QueryInterface, DataTypes } = require('sequelize/dist');
+const { BOOLEAN } = require('sequelize/types');
 const { Category, Product} = require('../../models');
 const { findAll } = require('../../models/Product');
 
@@ -29,19 +30,48 @@ router.get('/:id', async (req, res) => {
   
 );
 
-router.post('/', async (req, res) => {
-  try{
-   const catergo= await QueryInterface.addColumn('category_name','product', { type: DataTypes.STRING})
+router.post('/',  (req, res) => {
+  module.exports = {
+    async up(queryInterface, Sequelize) {
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
+            await queryInterface.addColumn(
+                'category_name',
+                'games',
+                {
+                    type: Sequelize.STRING,
+                },
+                { transaction }
+            );
+
+            await queryInterface.addIndex(
+                'category_name',
+                {
+                    fields: ['games'],
+                    unique: true,
+                },
+                { transaction }
+            );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
+    }}
+  
+//   try{
+//     await QueryInterface.addColumn('category_name','product', { type: DataTypes.STRING})
     
-   if( catergo===null){
-    console.log('cant add')
-  }else{console.log(catergo)
-    res.send(catergo)}
-  }catch(err){
-    res.status(500).json(err)
-  }
-  // create a new category
-});
+//    if( QueryInterface===null){
+//     console.log('cant add')
+//   }else{console.log(QueryInterface)
+//     res.json(QueryInterface)}
+//   }catch(err){
+//     res.status(500)
+//   }
+//   // create a new category
+// });
 
 router.put('/:id', (req, res) => {
    User.update(category_id)
