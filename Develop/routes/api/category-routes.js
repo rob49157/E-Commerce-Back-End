@@ -5,20 +5,22 @@ const { findAll } = require('../../models/Product');
 
 // The `/api/categories` endpoint
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all categories
-  const findall =  await Category.findAll()
-  req.send(findall)
+  const categories = await Category.findAll()
+  res.send(categories)
   // be sure to include its associated Products
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find one category by its `id` value
-  const findpk=  await findpk.findbypk(category_id)
-    if (findpk=== null){
+  console.log(req.params.id)
+  const categorie = await Category.findByPk(req.params.id)
+    if (categorie=== null){
       console.group('not found')
     } else{ 
-      console.log (findpk)
+      res.send(categorie)
+      console.log (categorie)
     }
   } 
   // be sure to include its associated Products
@@ -30,14 +32,14 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  await User.update(category_id)
+   User.update(category_id)
   });
 
   // update a category by its `id` value
 
 
 router.delete('/:id', (req, res) => {
-  await User.destroy({
+   User.destroy({
     where:{
       category_id
     }
