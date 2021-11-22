@@ -1,9 +1,12 @@
 const router = require('express').Router();
 const { query } = require('express');
-const { Model, QueryInterface, DataTypes } = require('sequelize/dist');
-const { BOOLEAN } = require('sequelize/types');
+//const { Model, QueryInterface, DataTypes } = require('sequelize/dist');
+// const { BOOLEAN } = require('sequelize/types');
 const { Category, Product} = require('../../models');
 const { findAll } = require('../../models/Product');
+// const { Sequelize, DataTypes } = require('sequelize');
+// const sequelize = new Sequelize(/* ... */);
+// const queryInterface = sequelize.getQueryInterface();
 
 // The `/api/categories` endpoint
 
@@ -30,52 +33,23 @@ router.get('/:id', async (req, res) => {
   
 );
 
-router.post('/',  (req, res) => {
-  module.exports = {
-    async up(queryInterface, Sequelize) {
-        const transaction = await queryInterface.sequelize.transaction();
-        try {
-            await queryInterface.addColumn(
-                'category_name',
-                'games',
-                {
-                    type: Sequelize.STRING,
-                },
-                { transaction }
-            );
-
-            await queryInterface.addIndex(
-                'category_name',
-                {
-                    fields: ['games'],
-                    unique: true,
-                },
-                { transaction }
-            );
-
-            await transaction.commit();
-        } catch (err) {
-            await transaction.rollback();
-            throw err;
-        }
-    }}
+router.post('/',  async (req, res) => {
+    try {
+      const categoryData = await Category.create(req.body);
+      res.status(200).json(categoryData);
+    } catch (err) {
+      res.status(400).json(err)
+    }
+ 
+   
+ });
+ 
+ router.put('/:id', (req, res) => {
+    User.update(category_id)
+   });
   
-//   try{
-//     await QueryInterface.addColumn('category_name','product', { type: DataTypes.STRING})
-    
-//    if( QueryInterface===null){
-//     console.log('cant add')
-//   }else{console.log(QueryInterface)
-//     res.json(QueryInterface)}
-//   }catch(err){
-//     res.status(500)
-//   }
-//   // create a new category
-// });
 
-router.put('/:id', (req, res) => {
-   User.update(category_id)
-  });
+  
 
   // update a category by its `id` value
 

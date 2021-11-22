@@ -4,7 +4,7 @@ const apiRoutes = require('./api');
 router.use('/api', apiRoutes);
 
 router.use((req, res) => {
-  res.send("<h1>asdasdasdsad!</h1>")
+  res.send("<h1>message recieve!</h1>")
 });
 
 module.exports = router;
