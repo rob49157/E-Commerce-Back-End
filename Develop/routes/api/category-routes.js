@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { query } = require('express');
 const { Model, QueryInterface, DataTypes } = require('sequelize/dist');
 const { Category, Product} = require('../../models');
 const { findAll } = require('../../models/Product');
@@ -7,7 +8,9 @@ const { findAll } = require('../../models/Product');
 
 router.get('/', async (req, res) => {
   // find all categories
-  const categories = await Category.findAll()
+  const categories = await Category.findAll({
+    include:[{Model:Category}]
+  })
   res.send(categories)
   // be sure to include its associated Products
 });
@@ -23,11 +26,20 @@ router.get('/:id', async (req, res) => {
       console.log (categorie)
     }
   } 
-  // be sure to include its associated Products
+  
 );
 
-router.post('/', (req, res) => {
-  QueryInterface.addColumn('category','product', { type: DataTypes.STRING})
+router.post('/', async (req, res) => {
+  try{
+   const catergo= await QueryInterface.addColumn('category_name','product', { type: DataTypes.STRING})
+    
+   if( catergo===null){
+    console.log('cant add')
+  }else{console.log(catergo)
+    res.send(catergo)}
+  }catch(err){
+    res.status(500).json(err)
+  }
   // create a new category
 });
 
