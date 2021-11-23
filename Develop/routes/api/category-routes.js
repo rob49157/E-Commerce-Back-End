@@ -8,26 +8,28 @@ const { findAll } = require('../../models/Product');
 // const sequelize = new Sequelize(/* ... */);
 // const queryInterface = sequelize.getQueryInterface();
 
-// The `/api/categories` endpoint
+
+// find all categories
 
 router.get('/', async (req, res) => {
-  // find all categories
+  console.log('asdfasdfasdf')
   const categories = await Category.findAll({
-    include:[{Model:Category}]
+    
   })
   res.send(categories)
-  // be sure to include its associated Products
+  
 });
 
+// find one category by its `id` value
 router.get('/:id', async (req, res) => {
-  // find one category by its `id` value
+  
   console.log(req.params.id)
-  const categorie = await Category.findByPk(req.params.id)
-    if (categorie=== null){
+  const categories = await Category.findByPk(req.params.id)
+    if (categories=== null){
       console.group('not found')
     } else{ 
-      res.send(categorie)
-      console.log (categorie)
+      res.send(categories)
+      console.log (categories)
     }
   } 
   
@@ -35,8 +37,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/',  async (req, res) => {
     try {
-      const categoryData = await Category.create(req.body);
-      res.status(200).json(categoryData);
+      const categories = await Category.create(req.body);
+      res.status(200).json(categories);
     } catch (err) {
       res.status(400).json(err)
     }
@@ -46,34 +48,26 @@ router.post('/',  async (req, res) => {
  
  // update a category by its `id` value
  router.put('/:id', async (req, res) => {
-   Category.update({
-     ID: req.body.ID
-
+   const categories=  await Category.update({
+    category_name: req.body.category_name
    },
    { where:{
-    ID: req.body.ID
+    ID: req.params.ID
    }
 
-   }).then((updatecategory)=>{
-     res.json(updatecategory)
    })
+   return res.json(categories)
  })
   
 // delete a category by its `id` value
 router.delete('/:id', (req, res) => {
-  Category.destroy({
+  const categories= Category.destroy({
     where: {
-      ID: req.body.ID
+      ID: req.params.ID
     },
   })
-    .then((deletecategory) => {
-      res.json(deletecategory);
-    })
-    .catch((err) => res.json(err));
+    return res.json(categories)
 });
    
-
-  
-
 
 module.exports = router;
