@@ -14,6 +14,7 @@ const { findAll } = require('../../models/Product');
 router.get('/', async (req, res) => {
   console.log('asdfasdfasdf')
   const categories = await Category.findAll({
+    // include:[{ model:Category}]
     
   })
   res.send(categories)
@@ -52,7 +53,7 @@ router.post('/',  async (req, res) => {
     category_name: req.body.category_name
    },
    { where:{
-    ID: req.params.ID
+    ID: req.params.id
    }
 
    })
@@ -63,7 +64,7 @@ router.post('/',  async (req, res) => {
 router.delete('/:id', (req, res) => {
   const categories= Category.destroy({
     where: {
-      ID: req.params.ID
+      ID: req.params.id
     },
   })
     return res.json(categories)
