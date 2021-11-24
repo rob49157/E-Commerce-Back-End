@@ -4,28 +4,43 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+router.get('/', async (req, res) => {
+  console.log('asdfasdfasdf')
+  const productsrutes = await Product.findAll({
+    // include:[{ model:Product}]
+    
+  })
+  res.send(productsrutes)
+  
 });
+  // be sure to include its associated Category and Tag data
+
 
 // get one product
-router.get('/:id', (req, res) => {
-  // find a single product by its `id`
+router.get('/:id',async(req, res) => {
+  
+  console.log(req.params.id)
+  const productsrutes = await Product.findByPk(req.params.id)
+    if (productsrutes=== null){
+      console.group('not found')
+    } else{ 
+      res.send(productsrutes)
+      console.log (productsrutes)
+    }
+  }) 
   // be sure to include its associated Category and Tag data
-});
+
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
-  Product.create(req.body)
+  
+  Product.create(
+      {
+         product_name: "Basketball",
+         price: 200.00,
+         stock: 3,
+         tagIds: [1, 2, 3, 4]
+       })
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -52,7 +67,7 @@ router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
     where: {
-      id: req.params.id,
+      ID: req.params.id,
     },
   })
     .then((product) => {
@@ -90,7 +105,14 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  const productsrutes= Product.destroy({
+    where: {
+      ID: req.params.id
+    },
+  })
+    return res.json(productsrutes)
 });
+  // delete one product by its `id` value
+
 
 module.exports = router;

@@ -1,7 +1,10 @@
 const express = require('express');
 const routes = require('./routes');
 const { Sequelize } = require('sequelize');
-const Category= require('./models/Category')
+const Category= require('./models/Category');
+const Product = require('./models/Product');
+const ProductTag = require('./models/ProductTag');
+const Tag = require('./models/Tag')
 
 
 // import sequelize connection
@@ -30,5 +33,3 @@ app.use(routes);
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
-
-Category.sync()
